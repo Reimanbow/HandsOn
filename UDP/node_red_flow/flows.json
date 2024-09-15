@@ -1,0 +1,21 @@
+[
+    {
+        "id": "d725a25ac9d1c217",
+        "type": "udp in",
+        "z": "42df24b3f15c1fac",
+        "name": "",
+        "iface": "",
+        "port": "50007",
+        "ipv": "udp4",
+        "multicast": "false",
+        "group": "",
+        "datatype": "utf8",
+        "x": 180,
+        "y": 160,
+        "wires": [
+            [
+                "2d16ec24305319d6"
+            ]
+        ]
+    }
+]
