@@ -1,25 +1,40 @@
 #include <Arduino.h>
 #include <M5Unified.h>
 #include <WiFi.h>
-#include <WiFiUdp.h>
+#include <PubSubClient.h>
+#include <ArduinoJson.h>
 
-// WiFi接続, UDP通信に必要な情報
+// WiFi接続, MQTTに必要な情報
 const char* ssid = "sensor-net";
 const char* pass = "sensor-net0101";
 const char* server_ip = "ローカルIP";
-const int server_port = 50007;
-const int client_port = 50008;
+const int server_port = 1883;
+const char* topic = "/sample/button";
+const char* device_id = "Core2";
 
-WiFiUDP wifiudp;
+WiFiClient client;
+PubSubClient mqttClient(client);
 
 M5Canvas canvas(&M5.Display);
 
-// UDPパケットを送信する
-void sendUDP(String label) {
-  wifiudp.beginPacket(server_ip, server_port);
-  wifiudp.print(label);
-  wifiudp.endPacket();
-  delay(1000);
+// MQTTの再接続を試みる
+void reconnect() {
+  while (!mqttClient.connected()) {
+    if (mqttClient.connect(device_id)) {
+    } else {
+      delay(500);
+    }
+  }
+}
+
+// JSON形式に変換し, MQTTでメッセージを送信
+void sendMQTT(String message) {
+  char json[200];
+  StaticJsonDocument<200> doc;
+  doc["Button"] = message;
+  serializeJson(doc, json);
+  mqttClient.publish(topic, json);
+  delay(500);
 }
 
 // 送信した結果をディスプレイに表示する
@@ -43,22 +58,28 @@ void setup() {
     delay(500);
   }
 
-  wifiudp.begin(client_port);
+  // MQTTブローカーの設定
+  mqttClient.setServer(server_ip, server_port);
 }
 
 void loop() {
+  // MQTTの接続が切れた場合は再接続を試みる
+  if (!mqttClient.connected()) {
+    reconnect();
+  }
+  // 接続の維持を行う
+  mqttClient.loop();
   M5.update();
 
-  // ボタンによって送信する文字を変更する
   if (M5.BtnA.wasPressed()) {
     printLabel("A");
-    sendUDP("A");
+    sendMQTT("A");
   } else if (M5.BtnB.wasPressed()) {
     printLabel("B");
-    sendUDP("B");    
+    sendMQTT("B");
   } else if (M5.BtnC.wasPressed()) {
     printLabel("C");
-    sendUDP("C");
+    sendMQTT("C");
   } else {
     printLabel(" ");
   }

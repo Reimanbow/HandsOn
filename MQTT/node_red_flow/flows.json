@@ -1,0 +1,98 @@
+[
+    {
+        "id": "1b6f3ff2cb07b080",
+        "type": "tab",
+        "label": "HandsOn_MQTT",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "da49f812d77d9c4c",
+        "type": "aedes broker",
+        "z": "1b6f3ff2cb07b080",
+        "name": "",
+        "mqtt_port": 1883,
+        "mqtt_ws_bind": "port",
+        "mqtt_ws_port": null,
+        "mqtt_ws_path": "",
+        "cert": "",
+        "key": "",
+        "certname": "",
+        "keyname": "",
+        "persistence_bind": "memory",
+        "dburl": "",
+        "usetls": false,
+        "x": 130,
+        "y": 60,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "40090506fc23553e",
+        "type": "mqtt in",
+        "z": "1b6f3ff2cb07b080",
+        "name": "",
+        "topic": "/sample/button",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "2c8336febed10610",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 140,
+        "wires": [
+            [
+                "75596bf89d3fc178"
+            ]
+        ]
+    },
+    {
+        "id": "75596bf89d3fc178",
+        "type": "debug",
+        "z": "1b6f3ff2cb07b080",
+        "name": "debug 38",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 340,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "2c8336febed10610",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "192.168.3.5",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
